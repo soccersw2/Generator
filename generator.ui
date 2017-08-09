@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Generator</class>
+ <widget class="QDialog" name="Generator">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>307</width>
+    <height>383</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTreeWidget" name="configWidget">
+     <column>
+      <property name="text">
+       <string>Property</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Value</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>Component</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Name</string>
+       </property>
+       <property name="text">
+        <string>Generator</string>
+       </property>
+      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Generator</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <item>
+       <property name="text">
+        <string>SerialNumber</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Operations</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Runtime</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Mode</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>EngineStatus</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Volts</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>RPM</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>AmbientTemp</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>EngineTemp</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Cycles</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ChargeCycles</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CrankAttempts</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SensorMode</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Status</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>TimeSinceOilChange</string>
+       </property>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+     </item>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

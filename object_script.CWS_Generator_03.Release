@@ -1,0 +1,13 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\settingsdialog.o
+./release\generatorparser.o
+./release\logger.o
+./release\generator.o
+./release\qrc_icons.o
+./release\moc_mainwindow.o
+./release\moc_settingsdialog.o
+./release\moc_generatorparser.o
+./release\moc_generator.o
+);

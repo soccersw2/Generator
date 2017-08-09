@@ -1,0 +1,188 @@
+#include "generator.h"
+#include "ui_generator.h"
+
+Generator::Generator(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::Generator)
+{
+    ui->setupUi(this);
+    //leds = ledsList;
+    parser = new GeneratorParser;
+}
+
+Generator::~Generator()
+{
+    delete ui;
+}
+
+GeneratorParser::Settings Generator::config() const
+{
+    return this->currentConfig;
+}
+
+void Generator::setLEDs(QList<QLabel*> ledList)
+{
+    this->leds = ledList;
+    this->generatorStatus = leds[0];
+    this->portOpen = leds[1];
+    this->recievingData = leds[2];
+    this->changeOil = leds[3];
+    this->crankFault = leds[4];
+    this->lowOilPressureSensor = leds[5];
+    this->highEngineTemp = leds[6];
+    this->engineTempSensor = leds[7];
+    this->ambientTempSensor = leds[8];
+    this->outputVoltageHigh = leds[9];
+    this->rpmHigh = leds[10];
+    this->rpmLow = leds[11];
+    this->lowOilPressure = leds[12];
+    this->stopOverRuntime = leds[13];
+    this->labelChangeOil = leds[14];
+    this->labelEngineRunning = leds[15];
+    this->labelOilPressure = leds[16];
+}
+
+void Generator::setLEDGreen(QLabel *label)
+{
+    label->setPixmap(QPixmap(":/images/images/led-green.gif"));
+}
+
+void Generator::setLEDRed(QLabel *label)
+{
+    label->setPixmap(QPixmap(":/images/images/led-red.gif"));
+}
+
+void Generator::setLEDYellow(QLabel *label)
+{
+    label->setPixmap(QPixmap(":/images/images/led-yellow.gif"));
+}
+
+void Generator::setLEDGray(QLabel *label)
+{
+    label->setPixmap(QPixmap(":/images/images/led-gray.gif"));
+}
+
+void Generator::openSerialPort()
+{
+    this->setLEDGreen(this->portOpen);
+    this->setLEDYellow(this->recievingData);
+    this->setLEDRed(this->generatorStatus);
+}
+
+void Generator::closeSerialPort()
+{
+    this->setLEDRed(this->portOpen);
+    this->setLEDRed(this->recievingData);
+    this->setLEDGray(this->generatorStatus);
+    this->setLEDGray(this->changeOil);
+    this->setLEDGray(this->crankFault);
+    this->setLEDGray(this->lowOilPressureSensor);
+    this->setLEDGray(this->highEngineTemp);
+    this->setLEDGray(this->engineTempSensor);
+    this->setLEDGray(this->ambientTempSensor);
+    this->setLEDGray(this->outputVoltageHigh);
+    this->setLEDGray(this->rpmHigh);
+    this->setLEDGray(this->rpmLow);
+    this->setLEDGray(this->lowOilPressure);
+    this->setLEDGray(this->stopOverRuntime);
+}
+
+void Generator::parse(const QString& data)
+{
+    this->parser->parse(data);
+    this->updateConfig();
+}
+
+void Generator::updateConfig()
+{
+    this->currentConfig = this->parser->settings();
+}
+
+void Generator::updateTreeWidget(QTreeWidgetItem *item)
+{
+    item->child(0)->setText(1, QString::number(this->config().serialNumber));
+    item->child(1)->setText(1, QString::number(this->config().operations));
+    //item->child(2)->setText(1, QString::number(this->config().runtime));
+    item->child(3)->setText(1, QString::number(this->config().mode));
+    item->child(4)->setText(1, QString::number(this->config().engineStatus));
+    item->child(5)->setText(1, QString::number(this->config().volts));
+    item->child(6)->setText(1, QString::number(this->config().rpm));
+    item->child(7)->setText(1, QString::number(this->config().ambientTemp));
+    item->child(8)->setText(1, QString::number(this->config().engineTemp));
+    item->child(9)->setText(1, QString::number(this->config().cycles));
+    item->child(10)->setText(1, QString::number(this->config().chargeCycles));
+    item->child(11)->setText(1, QString::number(this->config().crankAttempts));
+    item->child(12)->setText(1, QString::number(this->config().sensorMode));
+    //item->child(13)->setText(1, QString::number(this->config().status));
+    item->child(14)->setText(1, this->config().time); //time since oil change
+}
+
+void Generator::updateLEDs()
+{
+    bool alert = false;
+
+    //CHANGE OIL?
+    this->setLEDGray(this->changeOil);
+
+    //CRANK FAULT?
+    this->setLEDGray(this->crankFault);
+
+    //LOW OIL PRESSURE SENSOR?
+    this->setLEDGray(this->lowOilPressureSensor);
+
+    //HIGH ENGINE TEMP?
+    this->setLEDGray(this->highEngineTemp);
+
+    //ENGINE TEMP SENSOR?
+    this->setLEDGray(this->engineTempSensor);
+
+    //AMBIENT TEMP SENSOR?
+    this->setLEDGray(this->ambientTempSensor);
+
+    //OUTPUT VOLTAGE HIGH?
+    if(this->config().volts > 32) {
+        this->setLEDRed(this->outputVoltageHigh);
+        alert = true;
+    }
+    else this->setLEDGray(this->outputVoltageHigh);
+
+    //RPM HIGH/LOW?
+    if(this->config().rpm > 4000 || this->config().rpm < 2500)
+    {
+        this->setLEDRed(this->rpmHigh);
+        alert = true;
+    }
+    else
+    {
+        this->setLEDGray(this->rpmHigh);
+        this->setLEDGray(this->rpmLow);
+    }
+
+    //LOW OIL PRESSURE?
+    this->setLEDGray(this->lowOilPressure);
+
+    //STOP OVER RUNTIME?
+    this->setLEDGray(this->stopOverRuntime);
+
+    //ENGINE ON?
+    if (this->config().engineStatus == true && alert =+ false) {
+        this->setLEDGreen(this->generatorStatus);
+    }
+    else this->setLEDRed(this->generatorStatus);
+
+//    int i = 0;
+//    foreach (QLabel* label, this->leds)
+//    {
+//        QImage itemImage = label->pixmap()->toImage();
+//        QPixmap redLedPixmap = QPixmap(":/images/images/led-red.gif");
+//        QImage redLedImage = redLedPixmap.toImage();
+
+//        if(itemImage.format() == redLedImage.format() && i != 0)
+//        {
+//            qDebug() << "Red led: " << label;
+//            this->setLEDRed(this->generatorStatus);
+//            return;
+//        }
+//        i++;
+//    }
+}
